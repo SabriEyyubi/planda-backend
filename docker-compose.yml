@@ -1,0 +1,66 @@
+x-planda-local-ports:
+  web: 3000
+  api: 3001
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    # The official PostGIS image currently publishes amd64 only.
+    # Docker Desktop runs it through Rosetta/QEMU on Apple Silicon.
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: planda
+      POSTGRES_USER: planda
+      POSTGRES_PASSWORD: planda_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - planda_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U planda -d planda']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:8-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - '6379:6379'
+    volumes:
+      - planda_redis:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    image: minio/minio:RELEASE.2025-07-23T15-54-02Z
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: planda
+      MINIO_ROOT_PASSWORD: planda-development-secret
+    ports: ['9000:9000', '9001:9001']
+    volumes: [planda_minio:/data]
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  minio-init:
+    image: minio/mc:RELEASE.2025-07-21T05-28-08Z
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: ['/bin/sh', '-c']
+    command:
+      [
+        'mc alias set local http://minio:9000 planda planda-development-secret && mc mb --ignore-existing local/planda-media',
+      ]
+
+volumes:
+  planda_postgres:
+  planda_redis:
+  planda_minio:

@@ -1,0 +1,5081 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "operationId": "HealthController_health_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "example": { "status": "ok", "timestamp": "2026-08-13T12:00:00.000Z" } }
+              }
+            }
+          }
+        },
+        "tags": ["Health"]
+      }
+    },
+    "/api/v1/health/ready": {
+      "get": {
+        "operationId": "HealthController_ready_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "ready",
+                    "checks": { "postgres": "up", "redis": "up", "storage": "up" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Health"]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "operationId": "AuthController_register_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RegisterDto" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/TokenPairDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/LoginDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/TokenPairDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    },
+    "/api/v1/auth/refresh": {
+      "post": {
+        "operationId": "AuthController_refresh_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RefreshTokenDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/TokenPairDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    },
+    "/api/v1/auth/logout": {
+      "post": {
+        "operationId": "AuthController_logout_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/RefreshTokenDto" } }
+          }
+        },
+        "responses": {
+          "204": { "description": "" },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Authentication"]
+      }
+    },
+    "/api/v1/auth/me": {
+      "get": {
+        "operationId": "AuthController_me_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/AuthUserDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Authentication"]
+      }
+    },
+    "/api/v1/me/profile": {
+      "get": {
+        "operationId": "ProfileController_get_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProfileResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Profile"]
+      },
+      "patch": {
+        "operationId": "ProfileController_update_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateProfileDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProfileResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Profile"]
+      }
+    },
+    "/api/v1/locations/provinces": {
+      "get": {
+        "operationId": "LocationsController_listProvinces_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LocationReferenceDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Locations"]
+      }
+    },
+    "/api/v1/locations/provinces/{provinceId}/districts": {
+      "get": {
+        "operationId": "LocationsController_listDistricts_v1",
+        "parameters": [
+          { "name": "provinceId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LocationReferenceDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Locations"]
+      }
+    },
+    "/api/v1/locations/cities": {
+      "get": {
+        "operationId": "LocationsController_listCities_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CityCatalogDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Locations"]
+      }
+    },
+    "/api/v1/locations/cities/{slug}": {
+      "get": {
+        "operationId": "LocationsController_city_v1",
+        "parameters": [
+          { "name": "slug", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/CityCatalogDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Locations"]
+      }
+    },
+    "/api/v1/projects/{projectId}/leads": {
+      "post": {
+        "operationId": "BuyerMarketplaceController_createLead_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateLeadDto" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/LeadResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Buyer Marketplace"]
+      }
+    },
+    "/api/v1/me/saved-projects": {
+      "get": {
+        "operationId": "BuyerMarketplaceController_listSaved_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SavedProjectResponseDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Buyer Marketplace"]
+      }
+    },
+    "/api/v1/me/saved-projects/{projectId}": {
+      "put": {
+        "operationId": "BuyerMarketplaceController_save_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "204": { "description": "" },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Buyer Marketplace"]
+      },
+      "delete": {
+        "operationId": "BuyerMarketplaceController_unsave_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "204": { "description": "" },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Buyer Marketplace"]
+      }
+    },
+    "/api/v1/developer/leads": {
+      "get": {
+        "operationId": "DeveloperMarketplaceController_listLeads_v1",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Opaque keyset cursor",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": { "maxLength": 100, "type": "string" }
+          },
+          {
+            "name": "projectId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string", "enum": ["NEW", "CONTACTED", "QUALIFIED", "CLOSED"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LeadListResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      }
+    },
+    "/api/v1/developer/leads/{leadId}": {
+      "patch": {
+        "operationId": "DeveloperMarketplaceController_updateLead_v1",
+        "parameters": [
+          { "name": "leadId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateLeadDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/LeadResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/units": {
+      "get": {
+        "operationId": "DeveloperMarketplaceController_listUnits_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Opaque keyset cursor",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": { "maxLength": 100, "type": "string" }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string", "enum": ["AVAILABLE", "RESERVED", "SOLD"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UnitListResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      },
+      "post": {
+        "operationId": "DeveloperMarketplaceController_createUnit_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateUnitDto" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UnitResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/units/{unitId}": {
+      "patch": {
+        "operationId": "DeveloperMarketplaceController_updateUnit_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "unitId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateUnitDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/UnitResponseDto" } }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/payment-plans": {
+      "get": {
+        "operationId": "DeveloperMarketplaceController_listPaymentPlans_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PaymentPlanResponseDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      },
+      "post": {
+        "operationId": "DeveloperMarketplaceController_createPaymentPlan_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreatePaymentPlanDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PaymentPlanResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/payment-plans/{planId}": {
+      "patch": {
+        "operationId": "DeveloperMarketplaceController_updatePaymentPlan_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "planId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdatePaymentPlanDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PaymentPlanResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      },
+      "delete": {
+        "operationId": "DeveloperMarketplaceController_deletePaymentPlan_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "planId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DeletePaymentPlanDto" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "" },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Marketplace"]
+      }
+    },
+    "/api/v1/broker/projects": {
+      "get": {
+        "operationId": "BrokerMarketplaceController_list_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BrokerProjectResponseDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker Marketplace"]
+      }
+    },
+    "/api/v1/broker/projects/{idOrSlug}/materials": {
+      "get": {
+        "operationId": "BrokerMarketplaceController_materials_v1",
+        "parameters": [
+          { "name": "idOrSlug", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BrokerMaterialMetadataDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker Marketplace"]
+      }
+    },
+    "/api/v1/broker/projects/{idOrSlug}": {
+      "get": {
+        "operationId": "BrokerMarketplaceController_detail_v1",
+        "parameters": [
+          { "name": "idOrSlug", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BrokerProjectResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker Marketplace"]
+      }
+    },
+    "/api/v1/projects": {
+      "get": {
+        "operationId": "ProjectsController_list_v1",
+        "parameters": [
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "Project, developer or location search",
+            "schema": { "maxLength": 100, "type": "string" }
+          },
+          {
+            "name": "provinceId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          },
+          {
+            "name": "districtId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          },
+          {
+            "name": "developerOrganizationId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          },
+          {
+            "name": "minPrice",
+            "required": false,
+            "in": "query",
+            "schema": { "example": "6000000.0000", "type": "string" }
+          },
+          {
+            "name": "maxPrice",
+            "required": false,
+            "in": "query",
+            "schema": { "example": "12000000.0000", "type": "string" }
+          },
+          {
+            "name": "roomType",
+            "required": false,
+            "in": "query",
+            "schema": { "example": "2+1", "type": "string" }
+          },
+          {
+            "name": "minNetArea",
+            "required": false,
+            "in": "query",
+            "description": "Minimum net area of an available unit",
+            "schema": { "example": "80.00", "type": "string" }
+          },
+          {
+            "name": "maxDownPaymentPercent",
+            "required": false,
+            "in": "query",
+            "description": "Maximum down-payment percentage",
+            "schema": { "example": "30.00", "type": "string" }
+          },
+          {
+            "name": "maxMonthlyPayment",
+            "required": false,
+            "in": "query",
+            "description": "Maximum monthly payment",
+            "schema": { "example": "300000.0000", "type": "string" }
+          },
+          {
+            "name": "deliveryReady",
+            "required": false,
+            "in": "query",
+            "description": "Only ready or only not-ready projects",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "deliveryBefore",
+            "required": false,
+            "in": "query",
+            "description": "Delivery on or before this date",
+            "schema": { "format": "date", "type": "string" }
+          },
+          {
+            "name": "bounds",
+            "required": false,
+            "in": "query",
+            "description": "west,south,east,north decimal bounds",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "NEWEST",
+              "type": "string",
+              "enum": ["NEWEST", "PRICE_ASC", "PRICE_DESC", "DELIVERY_ASC"]
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Opaque cursor from pageInfo.nextCursor",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectListResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Projects"]
+      }
+    },
+    "/api/v1/projects/{idOrSlug}": {
+      "get": {
+        "operationId": "ProjectsController_get_v1",
+        "parameters": [
+          { "name": "idOrSlug", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectDetailResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Projects"]
+      }
+    },
+    "/api/v1/developer/projects": {
+      "get": {
+        "operationId": "DeveloperProjectsController_list_v1",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": { "maxLength": 100, "type": "string" }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Opaque keyset cursor",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperProjectListResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Projects"]
+      },
+      "post": {
+        "operationId": "DeveloperProjectsController_create_v1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/CreateProjectDto" } }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Projects"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}": {
+      "get": {
+        "operationId": "DeveloperProjectsController_detail_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperProjectDetailResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Projects"]
+      }
+    },
+    "/api/v1/developer/projects/{id}": {
+      "patch": {
+        "operationId": "DeveloperProjectsController_update_v1",
+        "parameters": [
+          { "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateDeveloperProjectDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Projects"]
+      }
+    },
+    "/api/v1/developer/overview": {
+      "get": {
+        "operationId": "DeveloperOverviewController_overview_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperOverviewResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Operations"]
+      }
+    },
+    "/api/v1/admin/projects/review-queue": {
+      "get": {
+        "operationId": "AdminProjectsController_reviewQueue_v1",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": { "maxLength": 100, "type": "string" }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Opaque keyset cursor",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AdminProjectListResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Admin Projects"]
+      }
+    },
+    "/api/v1/admin/projects/{id}/status": {
+      "patch": {
+        "operationId": "AdminProjectsController_updateStatus_v1",
+        "parameters": [
+          { "name": "id", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateAdminProjectStatusDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AdminProjectMutationResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Admin Projects"]
+      }
+    },
+    "/api/v1/admin/overview": {
+      "get": {
+        "operationId": "AdminOperationsController_overview_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AdminOverviewResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Admin Project Operations"]
+      }
+    },
+    "/api/v1/admin/data-quality": {
+      "get": {
+        "operationId": "AdminOperationsController_dataQuality_v1",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": { "maxLength": 100, "type": "string" }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Opaque keyset cursor",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AdminProjectListResponseDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Admin Project Operations"]
+      }
+    },
+    "/api/v1/developers": {
+      "get": {
+        "operationId": "DevelopersController_list_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PublicDeveloperDto" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Developers"]
+      }
+    },
+    "/api/v1/developers/{slug}": {
+      "get": {
+        "operationId": "DevelopersController_detail_v1",
+        "parameters": [
+          { "name": "slug", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PublicDeveloperDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "429": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          },
+          "503": {
+            "description": "",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/ApiErrorDto" } }
+            }
+          }
+        },
+        "tags": ["Developers"]
+      }
+    },
+    "/api/v1/projects/{idOrSlug}/views": {
+      "post": {
+        "operationId": "ProjectViewsController_record_v1",
+        "parameters": [
+          { "name": "idOrSlug", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RecordProjectViewDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectViewResponseDto" }
+              }
+            }
+          }
+        },
+        "tags": ["Project Analytics"]
+      }
+    },
+    "/api/v1/media/{mediaId}": {
+      "get": {
+        "operationId": "PublicMediaController_get_v1",
+        "parameters": [
+          { "name": "mediaId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Project Media"]
+      }
+    },
+    "/api/v1/developer/organizations": {
+      "get": {
+        "operationId": "DeveloperGrowthController_organizations_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/OrganizationScopeResponseDto" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      }
+    },
+    "/api/v1/developer/analytics": {
+      "get": {
+        "operationId": "DeveloperGrowthController_analytics_v1",
+        "parameters": [
+          {
+            "name": "range",
+            "required": false,
+            "in": "query",
+            "schema": { "default": 7, "type": "number", "enum": [7, 30] }
+          },
+          {
+            "name": "organizationId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperAnalyticsResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      }
+    },
+    "/api/v1/developer/settings": {
+      "get": {
+        "operationId": "DeveloperGrowthController_settings_v1",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperSettingsResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      },
+      "patch": {
+        "operationId": "DeveloperGrowthController_updateSettings_v1",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateDeveloperSettingsDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperSettingsResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/media": {
+      "get": {
+        "operationId": "DeveloperGrowthController_media_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DeveloperMediaResponseDto" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      },
+      "post": {
+        "operationId": "DeveloperGrowthController_upload_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": { "type": "string", "format": "binary" },
+                  "kind": { "type": "string", "enum": ["IMAGE"], "default": "IMAGE" },
+                  "altText": { "type": "string", "nullable": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperMediaResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/media/{mediaId}": {
+      "patch": {
+        "operationId": "DeveloperGrowthController_updateMedia_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "mediaId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/UpdateMediaDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DeveloperMediaResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      },
+      "delete": {
+        "operationId": "DeveloperGrowthController_deleteMedia_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "mediaId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "version", "required": true, "in": "query", "schema": { "type": "number" } }
+        ],
+        "responses": { "204": { "description": "" } },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      }
+    },
+    "/api/v1/developer/projects/{projectId}/media/reorder": {
+      "put": {
+        "operationId": "DeveloperGrowthController_reorder_v1",
+        "parameters": [
+          { "name": "projectId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "$ref": "#/components/schemas/ReorderMediaDto" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DeveloperMediaResponseDto" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Developer Growth"]
+      }
+    },
+    "/api/v1/broker/organizations": {
+      "get": {
+        "operationId": "BrokerGrowthController_organizations_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/OrganizationScopeResponseDto" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      }
+    },
+    "/api/v1/broker/clients": {
+      "get": {
+        "operationId": "BrokerGrowthController_clients_v1",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          },
+          { "name": "cursor", "required": false, "in": "query", "schema": { "type": "string" } },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "maximum": 100,
+              "default": 20,
+              "allOf": [{ "$ref": "#/components/schemas/Object" }]
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": { "type": "string", "enum": ["ACTIVE", "ARCHIVED"] }
+          },
+          { "name": "q", "required": false, "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BrokerClientListResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      },
+      "post": {
+        "operationId": "BrokerGrowthController_create_v1",
+        "parameters": [
+          {
+            "name": "organizationId",
+            "required": false,
+            "in": "query",
+            "schema": { "format": "uuid", "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateBrokerClientDto" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BrokerClientResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      }
+    },
+    "/api/v1/broker/clients/{clientId}": {
+      "get": {
+        "operationId": "BrokerGrowthController_detail_v1",
+        "parameters": [
+          { "name": "clientId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BrokerClientResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      },
+      "patch": {
+        "operationId": "BrokerGrowthController_update_v1",
+        "parameters": [
+          { "name": "clientId", "required": true, "in": "path", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateBrokerClientDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BrokerClientResponseDto" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      },
+      "delete": {
+        "operationId": "BrokerGrowthController_archive_v1",
+        "parameters": [
+          { "name": "clientId", "required": true, "in": "path", "schema": { "type": "string" } },
+          { "name": "version", "required": true, "in": "query", "schema": { "type": "number" } }
+        ],
+        "responses": { "204": { "description": "" } },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      }
+    },
+    "/api/v1/broker/contacts": {
+      "get": {
+        "operationId": "BrokerGrowthController_contacts_v1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BrokerContactResponseDto" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearer": [] }],
+        "tags": ["Broker CRM"]
+      }
+    }
+  },
+  "info": {
+    "title": "PLANDA Product API",
+    "description": "Shared API for web, iOS, Android, developer, broker and admin clients",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": { "bearer": { "scheme": "bearer", "bearerFormat": "JWT", "type": "http" } },
+    "schemas": {
+      "ApiErrorDto": {
+        "type": "object",
+        "properties": {
+          "statusCode": { "type": "number", "example": 400 },
+          "code": { "type": "string", "example": "VALIDATION_ERROR" },
+          "message": { "type": "string", "example": "Validation failed" },
+          "details": { "type": "array", "items": { "type": "string" } },
+          "requestId": { "type": "string", "example": "4f12bc5f-1a5e-4d14-bf14-6c7bb19ea413" }
+        },
+        "required": ["statusCode", "code", "message", "requestId"]
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "buyer@example.test" },
+          "password": { "type": "string", "example": "DevelopmentOnly!123", "minLength": 12 }
+        },
+        "required": ["email", "password"]
+      },
+      "OrganizationMembershipDto": {
+        "type": "object",
+        "properties": {
+          "organizationId": { "type": "string", "format": "uuid" },
+          "role": { "type": "string", "enum": ["OWNER", "ADMIN", "MEMBER"] }
+        },
+        "required": ["organizationId", "role"]
+      },
+      "AuthUserDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "email": { "type": "string", "format": "email" },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["BUYER", "DEVELOPER_MEMBER", "BROKER", "ADMIN", "SUPER_ADMIN"]
+            }
+          },
+          "organizationMemberships": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrganizationMembershipDto" }
+          }
+        },
+        "required": ["id", "email", "roles", "organizationMemberships"]
+      },
+      "TokenPairDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": { "type": "string" },
+          "refreshToken": { "type": "string" },
+          "accessTokenExpiresIn": { "type": "number", "example": 900 },
+          "refreshTokenExpiresIn": { "type": "number", "example": 2592000 },
+          "user": { "$ref": "#/components/schemas/AuthUserDto" }
+        },
+        "required": [
+          "accessToken",
+          "refreshToken",
+          "accessTokenExpiresIn",
+          "refreshTokenExpiresIn",
+          "user"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string", "example": "buyer@example.test" },
+          "password": { "type": "string", "example": "DevelopmentOnly!123" }
+        },
+        "required": ["email", "password"]
+      },
+      "RefreshTokenDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "Opaque-to-client rotating refresh JWT"
+          }
+        },
+        "required": ["refreshToken"]
+      },
+      "ProfileResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "email": { "type": "string", "format": "email", "readOnly": true },
+          "fullName": { "type": "object", "nullable": true },
+          "phone": { "type": "object", "nullable": true },
+          "preferredLanguage": {
+            "type": "string",
+            "enum": ["TR", "EN", "AR", "RU"],
+            "nullable": true
+          },
+          "preferredCurrency": { "type": "object", "nullable": true },
+          "createdAt": { "format": "date-time", "type": "string", "readOnly": true },
+          "roles": {
+            "type": "array",
+            "readOnly": true,
+            "items": {
+              "type": "string",
+              "enum": ["BUYER", "DEVELOPER_MEMBER", "BROKER", "ADMIN", "SUPER_ADMIN"]
+            }
+          }
+        },
+        "required": ["id", "email", "createdAt", "roles"]
+      },
+      "UpdateProfileDto": {
+        "type": "object",
+        "properties": {
+          "fullName": { "type": "object", "nullable": true, "minLength": 2, "maxLength": 160 },
+          "phone": { "type": "object", "nullable": true, "example": "+905551112233" },
+          "preferredLanguage": {
+            "type": "string",
+            "enum": ["TR", "EN", "AR", "RU"],
+            "nullable": true
+          },
+          "preferredCurrency": { "type": "object", "nullable": true, "example": "TRY" }
+        }
+      },
+      "LocationReferenceDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "code": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" }
+        },
+        "required": ["id", "code", "name", "slug"]
+      },
+      "CityCatalogDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "code": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "publishedProjectCount": { "type": "number" },
+          "startingPrice": { "type": "object", "nullable": true, "example": "6750000.0000" },
+          "currency": { "type": "object", "nullable": true, "example": "TRY" }
+        },
+        "required": [
+          "id",
+          "code",
+          "name",
+          "slug",
+          "publishedProjectCount",
+          "startingPrice",
+          "currency"
+        ]
+      },
+      "CreateLeadDto": {
+        "type": "object",
+        "properties": {
+          "fullName": { "type": "string", "minLength": 2, "maxLength": 160 },
+          "phone": { "type": "string", "example": "+905551112233" },
+          "email": { "type": "string" },
+          "preferredLanguage": { "type": "string", "enum": ["TR", "EN", "AR", "RU"] },
+          "unitPreference": { "type": "string", "example": "2+1" },
+          "budgetMin": { "type": "string", "example": "8000000.0000" },
+          "budgetMax": { "type": "string", "example": "12000000.0000" },
+          "currency": { "type": "object", "example": "TRY" },
+          "consentToDeveloper": {
+            "type": "boolean",
+            "description": "Must be true for developer sharing"
+          },
+          "consentVersion": { "type": "string", "example": "kvkk-lead-v1" }
+        },
+        "required": [
+          "fullName",
+          "phone",
+          "preferredLanguage",
+          "currency",
+          "consentToDeveloper",
+          "consentVersion"
+        ]
+      },
+      "LeadResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "projectId": { "type": "string", "format": "uuid" },
+          "projectName": { "type": "string" },
+          "fullName": { "type": "string" },
+          "phone": { "type": "string" },
+          "email": { "type": "object", "nullable": true },
+          "preferredLanguage": { "type": "string", "enum": ["TR", "EN", "AR", "RU"] },
+          "unitPreference": { "type": "object", "nullable": true },
+          "budgetMin": { "type": "object", "nullable": true },
+          "budgetMax": { "type": "object", "nullable": true },
+          "currency": { "type": "string" },
+          "closedReason": { "type": "object", "nullable": true },
+          "status": { "type": "string", "enum": ["NEW", "CONTACTED", "QUALIFIED", "CLOSED"] },
+          "version": { "type": "number" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "id",
+          "projectId",
+          "projectName",
+          "fullName",
+          "phone",
+          "preferredLanguage",
+          "currency",
+          "status",
+          "version",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "SavedProjectResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "slug": { "type": "string" },
+          "name": { "type": "string" },
+          "district": { "type": "string" },
+          "province": { "type": "string" },
+          "startingPrice": { "type": "string" },
+          "currency": { "type": "string" },
+          "heroImageUrl": { "type": "object", "nullable": true },
+          "savedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "district",
+          "province",
+          "startingPrice",
+          "currency",
+          "savedAt"
+        ]
+      },
+      "Object": { "type": "object", "properties": {} },
+      "OperationsPageInfoDto": {
+        "type": "object",
+        "properties": {
+          "nextCursor": { "type": "object", "nullable": true },
+          "hasNextPage": { "type": "boolean" }
+        },
+        "required": ["hasNextPage"]
+      },
+      "LeadListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/LeadResponseDto" } },
+          "pageInfo": { "$ref": "#/components/schemas/OperationsPageInfoDto" }
+        },
+        "required": ["items", "pageInfo"]
+      },
+      "UpdateLeadDto": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["NEW", "CONTACTED", "QUALIFIED", "CLOSED"] },
+          "expectedVersion": { "type": "number", "minimum": 1 },
+          "closedReason": { "type": "string" }
+        },
+        "required": ["status", "expectedVersion"]
+      },
+      "UnitResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "unitNumber": { "type": "string" },
+          "block": { "type": "object", "nullable": true },
+          "floor": { "type": "object", "nullable": true },
+          "roomType": { "type": "string" },
+          "netArea": { "type": "string" },
+          "grossArea": { "type": "object", "nullable": true },
+          "price": { "type": "string" },
+          "currency": { "type": "string" },
+          "status": { "type": "string", "enum": ["AVAILABLE", "RESERVED", "SOLD"] },
+          "orientation": { "type": "object", "nullable": true },
+          "floorPlanImageUrl": { "type": "object", "nullable": true },
+          "version": { "type": "number" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "id",
+          "unitNumber",
+          "roomType",
+          "netArea",
+          "price",
+          "currency",
+          "status",
+          "version",
+          "updatedAt"
+        ]
+      },
+      "UnitListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/UnitResponseDto" } },
+          "pageInfo": { "$ref": "#/components/schemas/OperationsPageInfoDto" }
+        },
+        "required": ["items", "pageInfo"]
+      },
+      "CreateUnitDto": {
+        "type": "object",
+        "properties": {
+          "unitNumber": { "type": "string" },
+          "block": { "type": "string" },
+          "floor": { "type": "number" },
+          "roomType": { "type": "string", "example": "2+1" },
+          "netArea": {
+            "type": "string",
+            "example": "86.50",
+            "pattern": "^\\d{1,8}(?:\\.\\d{1,2})?$"
+          },
+          "grossArea": {
+            "type": "string",
+            "example": "104.00",
+            "pattern": "^\\d{1,8}(?:\\.\\d{1,2})?$"
+          },
+          "price": {
+            "type": "string",
+            "example": "8750000.0000",
+            "pattern": "^\\d{1,15}(?:\\.\\d{1,4})?$"
+          },
+          "currency": { "type": "string", "example": "TRY" },
+          "status": { "type": "string", "enum": ["AVAILABLE", "RESERVED", "SOLD"] },
+          "orientation": { "type": "string" },
+          "floorPlanImageUrl": { "type": "string", "maxLength": 1000 }
+        },
+        "required": ["unitNumber", "roomType", "netArea", "price", "currency"]
+      },
+      "UpdateUnitDto": {
+        "type": "object",
+        "properties": {
+          "unitNumber": { "type": "string" },
+          "block": { "type": "string" },
+          "floor": { "type": "number" },
+          "roomType": { "type": "string", "example": "2+1" },
+          "netArea": {
+            "type": "string",
+            "example": "86.50",
+            "pattern": "^\\d{1,8}(?:\\.\\d{1,2})?$"
+          },
+          "grossArea": {
+            "type": "string",
+            "example": "104.00",
+            "pattern": "^\\d{1,8}(?:\\.\\d{1,2})?$"
+          },
+          "price": {
+            "type": "string",
+            "example": "8750000.0000",
+            "pattern": "^\\d{1,15}(?:\\.\\d{1,4})?$"
+          },
+          "currency": { "type": "string", "example": "TRY" },
+          "status": { "type": "string", "enum": ["AVAILABLE", "RESERVED", "SOLD"] },
+          "orientation": { "type": "string" },
+          "floorPlanImageUrl": { "type": "string", "maxLength": 1000 },
+          "expectedVersion": { "type": "number", "minimum": 1 }
+        },
+        "required": ["expectedVersion"]
+      },
+      "PaymentPlanResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "downPaymentPercent": { "type": "string" },
+          "termMonths": { "type": "number" },
+          "deliveryPercent": { "type": "string" },
+          "isRecommended": { "type": "boolean" },
+          "monthlyPayment": { "type": "object", "nullable": true },
+          "totalPrice": { "type": "object", "nullable": true },
+          "cashDiscountPercent": { "type": "object", "nullable": true },
+          "timelineNote": { "type": "object", "nullable": true },
+          "version": { "type": "number" }
+        },
+        "required": [
+          "id",
+          "name",
+          "downPaymentPercent",
+          "termMonths",
+          "deliveryPercent",
+          "isRecommended",
+          "version"
+        ]
+      },
+      "CreatePaymentPlanDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "downPaymentPercent": { "type": "string", "example": "30.00" },
+          "termMonths": { "type": "number", "minimum": 0, "maximum": 120 },
+          "deliveryPercent": { "type": "string", "example": "0.00", "default": "0.00" },
+          "isRecommended": { "type": "boolean" },
+          "monthlyPayment": {
+            "type": "string",
+            "example": "291666.0000",
+            "pattern": "^\\d{1,15}(?:\\.\\d{1,4})?$"
+          },
+          "totalPrice": {
+            "type": "string",
+            "example": "10000000.0000",
+            "pattern": "^\\d{1,15}(?:\\.\\d{1,4})?$"
+          },
+          "cashDiscountPercent": { "type": "string", "example": "10.00" },
+          "timelineNote": { "type": "string", "maxLength": 500 }
+        },
+        "required": ["name", "downPaymentPercent", "termMonths"]
+      },
+      "UpdatePaymentPlanDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "downPaymentPercent": { "type": "string", "example": "30.00" },
+          "termMonths": { "type": "number", "minimum": 0, "maximum": 120 },
+          "deliveryPercent": { "type": "string", "example": "0.00", "default": "0.00" },
+          "isRecommended": { "type": "boolean" },
+          "monthlyPayment": {
+            "type": "string",
+            "example": "291666.0000",
+            "pattern": "^\\d{1,15}(?:\\.\\d{1,4})?$"
+          },
+          "totalPrice": {
+            "type": "string",
+            "example": "10000000.0000",
+            "pattern": "^\\d{1,15}(?:\\.\\d{1,4})?$"
+          },
+          "cashDiscountPercent": { "type": "string", "example": "10.00" },
+          "timelineNote": { "type": "string", "maxLength": 500 },
+          "expectedVersion": { "type": "number", "minimum": 1 }
+        },
+        "required": ["expectedVersion"]
+      },
+      "DeletePaymentPlanDto": {
+        "type": "object",
+        "properties": { "expectedVersion": { "type": "number", "minimum": 1 } },
+        "required": ["expectedVersion"]
+      },
+      "BrokerProjectResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "slug": { "type": "string" },
+          "name": { "type": "string" },
+          "developerName": { "type": "string" },
+          "publicStartingPrice": { "type": "string" },
+          "brokerPrice": { "type": "object", "nullable": true },
+          "commissionPercent": { "type": "object", "nullable": true },
+          "reservationHours": { "type": "object", "nullable": true },
+          "salesContact": { "type": "object", "nullable": true },
+          "units": { "type": "array", "items": { "type": "object" } },
+          "materialCount": { "type": "number" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "developerName",
+          "publicStartingPrice",
+          "units",
+          "materialCount",
+          "updatedAt"
+        ]
+      },
+      "BrokerMaterialMetadataDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "kind": { "type": "string" },
+          "language": { "type": "string", "enum": ["TR", "EN", "AR", "RU"] },
+          "version": { "type": "string" },
+          "fileSizeBytes": { "type": "object", "nullable": true, "description": "Decimal string" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["id", "title", "kind", "language", "version", "updatedAt"]
+      },
+      "ProjectLocationReferenceDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "code": { "type": "string" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" }
+        },
+        "required": ["id", "code", "name", "slug"]
+      },
+      "ProjectResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "developerOrganizationId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "developerName": { "type": "string" },
+          "developerVerified": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"]
+          },
+          "province": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "district": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "latitude": { "type": "string", "example": "40.990868" },
+          "longitude": { "type": "string", "example": "29.027707" },
+          "startingPrice": { "type": "string", "example": "7500000.0000" },
+          "currency": { "type": "string", "example": "TRY" },
+          "deliveryDate": { "type": "string", "format": "date", "nullable": true },
+          "summary": { "type": "string", "nullable": true },
+          "heroImageUrl": { "type": "string", "nullable": true },
+          "stockUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "priceUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "version": { "type": "number" }
+        },
+        "required": [
+          "id",
+          "developerOrganizationId",
+          "name",
+          "slug",
+          "developerName",
+          "developerVerified",
+          "status",
+          "constructionStatus",
+          "province",
+          "district",
+          "latitude",
+          "longitude",
+          "startingPrice",
+          "currency",
+          "deliveryDate",
+          "summary",
+          "heroImageUrl",
+          "stockUpdatedAt",
+          "priceUpdatedAt",
+          "createdAt",
+          "updatedAt",
+          "version"
+        ]
+      },
+      "PageInfoDto": {
+        "type": "object",
+        "properties": {
+          "nextCursor": { "type": "string", "nullable": true },
+          "hasNextPage": { "type": "boolean" }
+        },
+        "required": ["nextCursor", "hasNextPage"]
+      },
+      "ProjectListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProjectResponseDto" }
+          },
+          "pageInfo": { "$ref": "#/components/schemas/PageInfoDto" }
+        },
+        "required": ["items", "pageInfo"]
+      },
+      "ProjectUnitTypeDto": {
+        "type": "object",
+        "properties": {
+          "roomType": { "type": "string" },
+          "availableCount": { "type": "number" },
+          "minNetArea": { "type": "string" },
+          "maxNetArea": { "type": "string" },
+          "startingPrice": { "type": "string" },
+          "currency": { "type": "string" },
+          "minFloor": { "type": "number", "nullable": true },
+          "maxFloor": { "type": "number", "nullable": true },
+          "orientations": { "type": "array", "items": { "type": "string" } },
+          "floorPlanImageUrl": { "type": "string", "nullable": true }
+        },
+        "required": [
+          "roomType",
+          "availableCount",
+          "minNetArea",
+          "maxNetArea",
+          "startingPrice",
+          "currency",
+          "minFloor",
+          "maxFloor",
+          "orientations",
+          "floorPlanImageUrl"
+        ]
+      },
+      "PublicPaymentPlanDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "downPaymentPercent": { "type": "string" },
+          "termMonths": { "type": "number" },
+          "deliveryPercent": { "type": "string" },
+          "isRecommended": { "type": "boolean" },
+          "monthlyPayment": { "type": "string", "nullable": true },
+          "totalPrice": { "type": "string", "nullable": true },
+          "cashDiscountPercent": { "type": "string", "nullable": true },
+          "timelineNote": { "type": "string", "nullable": true }
+        },
+        "required": [
+          "id",
+          "name",
+          "downPaymentPercent",
+          "termMonths",
+          "deliveryPercent",
+          "isRecommended",
+          "monthlyPayment",
+          "totalPrice",
+          "cashDiscountPercent",
+          "timelineNote"
+        ]
+      },
+      "PublicProjectMediaDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "kind": { "type": "string", "enum": ["IMAGE"] },
+          "url": { "type": "string" },
+          "altText": { "type": "string", "nullable": true }
+        },
+        "required": ["id", "kind", "url", "altText"]
+      },
+      "PublicProjectAmenityDto": {
+        "type": "object",
+        "properties": { "code": { "type": "string" }, "label": { "type": "string" } },
+        "required": ["code", "label"]
+      },
+      "PublicProjectPointOfInterestDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "category": { "type": "string" },
+          "distanceMeters": { "type": "number" }
+        },
+        "required": ["id", "name", "category", "distanceMeters"]
+      },
+      "ProjectDetailResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "developerOrganizationId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "developerName": { "type": "string" },
+          "developerVerified": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"]
+          },
+          "province": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "district": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "latitude": { "type": "string", "example": "40.990868" },
+          "longitude": { "type": "string", "example": "29.027707" },
+          "startingPrice": { "type": "string", "example": "7500000.0000" },
+          "currency": { "type": "string", "example": "TRY" },
+          "deliveryDate": { "type": "string", "format": "date", "nullable": true },
+          "summary": { "type": "string", "nullable": true },
+          "heroImageUrl": { "type": "string", "nullable": true },
+          "stockUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "priceUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "version": { "type": "number" },
+          "unitTypes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProjectUnitTypeDto" }
+          },
+          "paymentPlans": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PublicPaymentPlanDto" }
+          },
+          "media": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PublicProjectMediaDto" }
+          },
+          "amenities": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PublicProjectAmenityDto" }
+          },
+          "pointsOfInterest": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PublicProjectPointOfInterestDto" }
+          },
+          "availableUnitCount": { "type": "number" }
+        },
+        "required": [
+          "id",
+          "developerOrganizationId",
+          "name",
+          "slug",
+          "developerName",
+          "developerVerified",
+          "status",
+          "constructionStatus",
+          "province",
+          "district",
+          "latitude",
+          "longitude",
+          "startingPrice",
+          "currency",
+          "deliveryDate",
+          "summary",
+          "heroImageUrl",
+          "stockUpdatedAt",
+          "priceUpdatedAt",
+          "createdAt",
+          "updatedAt",
+          "version",
+          "unitTypes",
+          "paymentPlans",
+          "media",
+          "amenities",
+          "pointsOfInterest",
+          "availableUnitCount"
+        ]
+      },
+      "DeveloperProjectItemDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "developerOrganizationId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "developerName": { "type": "string" },
+          "developerVerified": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"]
+          },
+          "province": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "district": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "latitude": { "type": "string", "example": "40.990868" },
+          "longitude": { "type": "string", "example": "29.027707" },
+          "startingPrice": { "type": "string", "example": "7500000.0000" },
+          "currency": { "type": "string", "example": "TRY" },
+          "deliveryDate": { "type": "string", "format": "date", "nullable": true },
+          "summary": { "type": "string", "nullable": true },
+          "heroImageUrl": { "type": "string", "nullable": true },
+          "stockUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "priceUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "version": { "type": "number" },
+          "unitCount": { "type": "number" },
+          "availableUnitCount": { "type": "number" },
+          "leadCount": { "type": "number" },
+          "paymentPlanCount": { "type": "number" },
+          "completenessPercent": { "type": "number", "minimum": 0, "maximum": 100 }
+        },
+        "required": [
+          "id",
+          "developerOrganizationId",
+          "name",
+          "slug",
+          "developerName",
+          "developerVerified",
+          "status",
+          "constructionStatus",
+          "province",
+          "district",
+          "latitude",
+          "longitude",
+          "startingPrice",
+          "currency",
+          "deliveryDate",
+          "summary",
+          "heroImageUrl",
+          "stockUpdatedAt",
+          "priceUpdatedAt",
+          "createdAt",
+          "updatedAt",
+          "version",
+          "unitCount",
+          "availableUnitCount",
+          "leadCount",
+          "paymentPlanCount",
+          "completenessPercent"
+        ]
+      },
+      "DeveloperProjectListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DeveloperProjectItemDto" }
+          },
+          "pageInfo": { "$ref": "#/components/schemas/OperationsPageInfoDto" }
+        },
+        "required": ["items", "pageInfo"]
+      },
+      "DeveloperProjectDetailResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "developerOrganizationId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "developerName": { "type": "string" },
+          "developerVerified": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"]
+          },
+          "province": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "district": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "latitude": { "type": "string", "example": "40.990868" },
+          "longitude": { "type": "string", "example": "29.027707" },
+          "startingPrice": { "type": "string", "example": "7500000.0000" },
+          "currency": { "type": "string", "example": "TRY" },
+          "deliveryDate": { "type": "string", "format": "date", "nullable": true },
+          "summary": { "type": "string", "nullable": true },
+          "heroImageUrl": { "type": "string", "nullable": true },
+          "stockUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "priceUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "version": { "type": "number" },
+          "unitCount": { "type": "number" },
+          "availableUnitCount": { "type": "number" },
+          "leadCount": { "type": "number" },
+          "paymentPlanCount": { "type": "number" },
+          "completenessPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+          "mediaCount": { "type": "number" }
+        },
+        "required": [
+          "id",
+          "developerOrganizationId",
+          "name",
+          "slug",
+          "developerName",
+          "developerVerified",
+          "status",
+          "constructionStatus",
+          "province",
+          "district",
+          "latitude",
+          "longitude",
+          "startingPrice",
+          "currency",
+          "deliveryDate",
+          "summary",
+          "heroImageUrl",
+          "stockUpdatedAt",
+          "priceUpdatedAt",
+          "createdAt",
+          "updatedAt",
+          "version",
+          "unitCount",
+          "availableUnitCount",
+          "leadCount",
+          "paymentPlanCount",
+          "completenessPercent",
+          "mediaCount"
+        ]
+      },
+      "CreateProjectDto": {
+        "type": "object",
+        "properties": {
+          "developerOrganizationId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string", "example": "Planda Park" },
+          "slug": { "type": "string", "example": "planda-park" },
+          "provinceId": { "type": "string", "format": "uuid" },
+          "districtId": { "type": "string", "format": "uuid" },
+          "latitude": {
+            "type": "string",
+            "example": "40.990868",
+            "description": "Exact decimal string"
+          },
+          "longitude": {
+            "type": "string",
+            "example": "29.027707",
+            "description": "Exact decimal string"
+          },
+          "startingPrice": {
+            "type": "string",
+            "example": "7500000.00",
+            "description": "Non-negative decimal string"
+          },
+          "currency": { "type": "string", "example": "TRY", "minLength": 3, "maxLength": 3 },
+          "deliveryDate": { "type": "string", "example": "2028-06-30", "format": "date" },
+          "summary": { "type": "string", "maxLength": 2000 },
+          "heroImageUrl": { "type": "string", "maxLength": 1000 },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"],
+            "default": "PLANNED"
+          }
+        },
+        "required": [
+          "developerOrganizationId",
+          "name",
+          "slug",
+          "provinceId",
+          "districtId",
+          "latitude",
+          "longitude",
+          "startingPrice",
+          "currency"
+        ]
+      },
+      "UpdateDeveloperProjectDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "Planda Park" },
+          "slug": { "type": "string", "example": "planda-park" },
+          "provinceId": { "type": "string", "format": "uuid" },
+          "districtId": { "type": "string", "format": "uuid" },
+          "latitude": {
+            "type": "string",
+            "example": "40.990868",
+            "description": "Exact decimal string"
+          },
+          "longitude": {
+            "type": "string",
+            "example": "29.027707",
+            "description": "Exact decimal string"
+          },
+          "startingPrice": {
+            "type": "string",
+            "example": "7500000.00",
+            "description": "Non-negative decimal string"
+          },
+          "currency": { "type": "string", "example": "TRY", "minLength": 3, "maxLength": 3 },
+          "deliveryDate": { "type": "string", "example": "2028-06-30", "format": "date" },
+          "summary": { "type": "string", "maxLength": 2000 },
+          "heroImageUrl": { "type": "string", "maxLength": 1000 },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"],
+            "default": "PLANNED"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["IN_REVIEW"],
+            "description": "Developer transition is limited to DRAFT → IN_REVIEW"
+          }
+        }
+      },
+      "DeveloperOverviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "projectCount": { "type": "number" },
+          "publishedProjectCount": { "type": "number" },
+          "availableUnitCount": { "type": "number" },
+          "newLeadCount": { "type": "number" },
+          "staleInventoryProjectCount": { "type": "number" }
+        },
+        "required": [
+          "projectCount",
+          "publishedProjectCount",
+          "availableUnitCount",
+          "newLeadCount",
+          "staleInventoryProjectCount"
+        ]
+      },
+      "AdminProjectReadItemDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "developerOrganizationId": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "developerName": { "type": "string" },
+          "developerVerified": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["DRAFT", "IN_REVIEW", "PUBLISHED", "ARCHIVED"] },
+          "constructionStatus": {
+            "type": "string",
+            "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"]
+          },
+          "province": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "district": { "$ref": "#/components/schemas/ProjectLocationReferenceDto" },
+          "latitude": { "type": "string", "example": "40.990868" },
+          "longitude": { "type": "string", "example": "29.027707" },
+          "startingPrice": { "type": "string", "example": "7500000.0000" },
+          "currency": { "type": "string", "example": "TRY" },
+          "deliveryDate": { "type": "string", "format": "date", "nullable": true },
+          "summary": { "type": "string", "nullable": true },
+          "heroImageUrl": { "type": "string", "nullable": true },
+          "stockUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "priceUpdatedAt": { "type": "string", "format": "date-time", "nullable": true },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "version": { "type": "number" },
+          "unitCount": { "type": "number" },
+          "availableUnitCount": { "type": "number" },
+          "leadCount": { "type": "number" },
+          "paymentPlanCount": { "type": "number" },
+          "completenessPercent": { "type": "number", "minimum": 0, "maximum": 100 },
+          "issues": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": [
+          "id",
+          "developerOrganizationId",
+          "name",
+          "slug",
+          "developerName",
+          "developerVerified",
+          "status",
+          "constructionStatus",
+          "province",
+          "district",
+          "latitude",
+          "longitude",
+          "startingPrice",
+          "currency",
+          "deliveryDate",
+          "summary",
+          "heroImageUrl",
+          "stockUpdatedAt",
+          "priceUpdatedAt",
+          "createdAt",
+          "updatedAt",
+          "version",
+          "unitCount",
+          "availableUnitCount",
+          "leadCount",
+          "paymentPlanCount",
+          "completenessPercent",
+          "issues"
+        ]
+      },
+      "AdminProjectListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AdminProjectReadItemDto" }
+          },
+          "pageInfo": { "$ref": "#/components/schemas/OperationsPageInfoDto" }
+        },
+        "required": ["items", "pageInfo"]
+      },
+      "UpdateAdminProjectStatusDto": {
+        "type": "object",
+        "properties": { "status": { "type": "string", "enum": ["PUBLISHED", "ARCHIVED"] } },
+        "required": ["status"]
+      },
+      "AdminProjectMutationResponseDto": {
+        "type": "object",
+        "properties": {
+          "project": { "$ref": "#/components/schemas/ProjectResponseDto" },
+          "auditId": { "type": "string", "format": "uuid" }
+        },
+        "required": ["project", "auditId"]
+      },
+      "AdminOverviewResponseDto": {
+        "type": "object",
+        "properties": {
+          "publishedProjectCount": { "type": "number" },
+          "inReviewProjectCount": { "type": "number" },
+          "draftProjectCount": { "type": "number" },
+          "archivedProjectCount": { "type": "number" },
+          "staleStockProjectCount": { "type": "number" },
+          "stalePriceProjectCount": { "type": "number" }
+        },
+        "required": [
+          "publishedProjectCount",
+          "inReviewProjectCount",
+          "draftProjectCount",
+          "archivedProjectCount",
+          "staleStockProjectCount",
+          "stalePriceProjectCount"
+        ]
+      },
+      "PublicDeveloperDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "verifiedAt": { "type": "object", "format": "date-time", "nullable": true },
+          "about": { "type": "object", "nullable": true },
+          "logoUrl": { "type": "object", "nullable": true },
+          "publishedProjectCount": { "type": "number" },
+          "startingPrice": { "type": "object", "nullable": true, "example": "6750000.0000" },
+          "currency": { "type": "object", "nullable": true, "example": "TRY" }
+        },
+        "required": ["id", "name", "slug", "publishedProjectCount", "startingPrice", "currency"]
+      },
+      "RecordProjectViewDto": {
+        "type": "object",
+        "properties": { "sessionId": { "type": "string", "minLength": 16, "maxLength": 200 } },
+        "required": ["sessionId"]
+      },
+      "ProjectViewResponseDto": {
+        "type": "object",
+        "properties": { "recorded": { "type": "boolean" } },
+        "required": ["recorded"]
+      },
+      "OrganizationScopeResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["DEVELOPER", "BROKER_AGENCY", "PLATFORM"] },
+          "role": { "type": "string", "enum": ["OWNER", "ADMIN", "MEMBER"] },
+          "canManage": { "type": "boolean" }
+        },
+        "required": ["id", "name", "type", "role", "canManage"]
+      },
+      "AnalyticsRangeDto": {
+        "type": "object",
+        "properties": {
+          "days": { "type": "number" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "previousFrom": { "type": "string" },
+          "previousTo": { "type": "string" },
+          "timeZone": { "type": "string", "example": "UTC" }
+        },
+        "required": ["days", "from", "to", "previousFrom", "previousTo", "timeZone"]
+      },
+      "AnalyticsTotalsDto": {
+        "type": "object",
+        "properties": {
+          "views": { "type": "number" },
+          "favorites": { "type": "number" },
+          "leads": { "type": "number" },
+          "conversionRate": { "type": "number", "nullable": true },
+          "viewsChangePercent": { "type": "number", "nullable": true },
+          "favoritesChangePercent": { "type": "number", "nullable": true },
+          "leadsChangePercent": { "type": "number", "nullable": true }
+        },
+        "required": [
+          "views",
+          "favorites",
+          "leads",
+          "conversionRate",
+          "viewsChangePercent",
+          "favoritesChangePercent",
+          "leadsChangePercent"
+        ]
+      },
+      "AnalyticsDailyDto": {
+        "type": "object",
+        "properties": {
+          "date": { "type": "string" },
+          "views": { "type": "number" },
+          "favorites": { "type": "number" },
+          "leads": { "type": "number" }
+        },
+        "required": ["date", "views", "favorites", "leads"]
+      },
+      "AnalyticsProjectDto": {
+        "type": "object",
+        "properties": {
+          "projectId": { "type": "string" },
+          "name": { "type": "string" },
+          "views": { "type": "number" },
+          "favorites": { "type": "number" },
+          "leads": { "type": "number" },
+          "conversionRate": { "type": "number", "nullable": true }
+        },
+        "required": ["projectId", "name", "views", "favorites", "leads", "conversionRate"]
+      },
+      "DeveloperAnalyticsResponseDto": {
+        "type": "object",
+        "properties": {
+          "range": { "$ref": "#/components/schemas/AnalyticsRangeDto" },
+          "totals": { "$ref": "#/components/schemas/AnalyticsTotalsDto" },
+          "daily": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AnalyticsDailyDto" }
+          },
+          "topProjects": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AnalyticsProjectDto" }
+          }
+        },
+        "required": ["range", "totals", "daily", "topProjects"]
+      },
+      "DeveloperSettingsResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "about": { "type": "string", "nullable": true },
+          "salesEmail": { "type": "string", "nullable": true, "format": "email" },
+          "salesPhone": { "type": "string", "nullable": true },
+          "websiteUrl": { "type": "string", "nullable": true, "format": "uri" },
+          "logoUrl": { "type": "string", "nullable": true, "format": "uri" },
+          "version": { "type": "number" }
+        },
+        "required": [
+          "id",
+          "name",
+          "about",
+          "salesEmail",
+          "salesPhone",
+          "websiteUrl",
+          "logoUrl",
+          "version"
+        ]
+      },
+      "UpdateDeveloperSettingsDto": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "number" },
+          "name": { "type": "string" },
+          "about": { "type": "string", "nullable": true },
+          "salesEmail": { "type": "string", "nullable": true, "format": "email" },
+          "salesPhone": { "type": "string", "nullable": true },
+          "websiteUrl": { "type": "string", "nullable": true, "format": "uri" }
+        },
+        "required": ["version"]
+      },
+      "DeveloperMediaResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "type": "string", "enum": ["IMAGE"] },
+          "url": { "type": "string" },
+          "altText": { "type": "string", "nullable": true },
+          "sortOrder": { "type": "number" },
+          "version": { "type": "number" },
+          "createdAt": { "type": "string" },
+          "updatedAt": { "type": "string" }
+        },
+        "required": [
+          "id",
+          "kind",
+          "url",
+          "altText",
+          "sortOrder",
+          "version",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "UpdateMediaDto": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "number" },
+          "altText": { "type": "string", "nullable": true }
+        },
+        "required": ["version", "altText"]
+      },
+      "MediaOrderItemDto": {
+        "type": "object",
+        "properties": { "id": { "type": "string" }, "version": { "type": "number" } },
+        "required": ["id", "version"]
+      },
+      "ReorderMediaDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MediaOrderItemDto" }
+          }
+        },
+        "required": ["items"]
+      },
+      "BrokerClientResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "fullName": { "type": "string" },
+          "phone": { "type": "string", "nullable": true },
+          "email": { "type": "string", "nullable": true },
+          "notes": { "type": "string", "nullable": true },
+          "status": { "type": "string", "enum": ["ACTIVE", "ARCHIVED"] },
+          "version": { "type": "number" },
+          "createdAt": { "type": "string" },
+          "updatedAt": { "type": "string" }
+        },
+        "required": [
+          "id",
+          "fullName",
+          "phone",
+          "email",
+          "notes",
+          "status",
+          "version",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "BrokerClientListResponseDto": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BrokerClientResponseDto" }
+          },
+          "pageInfo": {
+            "type": "object",
+            "properties": {
+              "hasNextPage": { "type": "boolean" },
+              "nextCursor": { "type": "string", "nullable": true }
+            },
+            "required": ["hasNextPage", "nextCursor"]
+          }
+        },
+        "required": ["items"]
+      },
+      "CreateBrokerClientDto": {
+        "type": "object",
+        "properties": {
+          "fullName": { "type": "string" },
+          "phone": { "type": "string", "nullable": true },
+          "email": { "type": "string", "nullable": true, "format": "email" },
+          "notes": { "type": "string", "nullable": true }
+        },
+        "required": ["fullName"]
+      },
+      "UpdateBrokerClientDto": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "number" },
+          "fullName": { "type": "string" },
+          "phone": { "type": "string", "nullable": true },
+          "email": { "type": "string", "nullable": true, "format": "email" },
+          "notes": { "type": "string", "nullable": true },
+          "status": { "type": "string", "enum": ["ACTIVE", "ARCHIVED"] }
+        },
+        "required": ["version"]
+      },
+      "BrokerContactResponseDto": {
+        "type": "object",
+        "properties": {
+          "projectId": { "type": "string" },
+          "projectName": { "type": "string" },
+          "developerName": { "type": "string" },
+          "fullName": { "type": "string" },
+          "phone": { "type": "string", "nullable": true },
+          "email": { "type": "string", "nullable": true }
+        },
+        "required": ["projectId", "projectName", "developerName", "fullName", "phone", "email"]
+      }
+    }
+  }
+}

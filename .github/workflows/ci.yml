@@ -1,0 +1,88 @@
+name: Backend CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:17-3.5
+        env:
+          POSTGRES_DB: planda_test
+          POSTGRES_USER: planda
+          POSTGRES_PASSWORD: planda_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U planda -d planda_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+      redis:
+        image: redis:8-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s
+          --health-timeout 3s --health-retries 10
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://planda:planda_test@localhost:5432/planda_test?schema=public
+      REDIS_URL: redis://localhost:6379
+      JWT_ACCESS_SECRET: ci-access-secret-at-least-32-characters-long
+      JWT_REFRESH_SECRET: ci-refresh-secret-at-least-32-characters-long
+      JWT_ACCESS_TTL: 15m
+      JWT_REFRESH_TTL: 7d
+      JWT_ISSUER: planda-api
+      JWT_AUDIENCE: planda-clients
+      AUTH_REFRESH_ROTATION_GRACE_SECONDS: 5
+      CORS_ORIGINS: http://localhost:3000
+      LEAD_CONSENT_CURRENT_VERSION: kvkk-lead-v1
+      LEAD_CONSENT_APPROVED_VERSIONS: kvkk-lead-v1
+      ANALYTICS_SESSION_HASH_SECRET: ci-analytics-secret-at-least-32-characters-long
+      STORAGE_ENDPOINT: http://127.0.0.1:9000
+      STORAGE_REGION: us-east-1
+      STORAGE_BUCKET: planda-media
+      STORAGE_ACCESS_KEY: planda-ci
+      STORAGE_SECRET_KEY: planda-ci-secret-at-least-16-characters
+      STORAGE_PUBLIC_BASE_URL: http://127.0.0.1:3001/api/v1/media
+      STORAGE_FORCE_PATH_STYLE: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Start S3-compatible storage
+        run: >-
+          docker run --detach --name planda-minio --publish 9000:9000
+          --env MINIO_ROOT_USER=planda-ci
+          --env MINIO_ROOT_PASSWORD=planda-ci-secret-at-least-16-characters
+          minio/minio:RELEASE.2025-09-07T16-13-09Z
+          server /data
+      - name: Wait for storage
+        run: |
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:9000/minio/health/live; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs planda-minio
+          exit 1
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm storage:ensure-bucket
+      - run: pnpm db:generate
+      - run: pnpm db:migrate:deploy
+      - run: pnpm exec prisma validate
+      - run: pnpm lint
+      - run: pnpm format:check
+      - run: pnpm build
+      - run: pnpm api:contract
+      - run: git diff --exit-code -- openapi/openapi.json
+      - run: pnpm test
+      - run: pnpm db:seed
+      - run: pnpm test:e2e
