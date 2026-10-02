@@ -1,6 +1,6 @@
-import { ApiPropertyOptional, PartialType, PickType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType, PickType } from '@nestjs/swagger';
 import { ProjectStatus } from '@prisma/client';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, Min } from 'class-validator';
 import { CreateProjectDto } from './create-project.dto';
 
 export class UpdateDeveloperProjectDto extends PartialType(
@@ -19,6 +19,11 @@ export class UpdateDeveloperProjectDto extends PartialType(
     'constructionStatus',
   ] as const),
 ) {
+  @ApiProperty({ minimum: 1, description: 'Project version originally loaded by the editor' })
+  @IsInt()
+  @Min(1)
+  expectedVersion!: number;
+
   @ApiPropertyOptional({
     enum: [ProjectStatus.IN_REVIEW],
     description: 'Developer transition is limited to DRAFT → IN_REVIEW',

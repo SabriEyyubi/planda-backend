@@ -40,30 +40,25 @@ export class LocationsService {
   }
 
   private async cityById(id: string): Promise<CityCatalogDto> {
+    const groupedProjects = this.prisma.project.groupBy({
+      by: ['currency'],
+      where: { provinceId: id, status: ProjectStatus.PUBLISHED },
+      _count: { _all: true },
+      _min: { startingPrice: true },
+    });
     const [province, projects] = await this.prisma.$transaction([
       this.prisma.province.findUniqueOrThrow({ where: { id } }),
-      this.prisma.project.aggregate({
-        where: { provinceId: id, status: ProjectStatus.PUBLISHED },
-        _count: { _all: true },
-        _min: { startingPrice: true },
-      }),
+      groupedProjects,
     ]);
-    const cheapest = projects._min.startingPrice;
-    const currency = cheapest
-      ? await this.prisma.project.findFirst({
-          where: { provinceId: id, status: ProjectStatus.PUBLISHED, startingPrice: cheapest },
-          select: { currency: true },
-          orderBy: { id: 'asc' },
-        })
-      : null;
+    const singleCurrency = projects.length === 1 ? projects[0] : undefined;
     return {
       id: province.id,
       code: province.code,
       name: province.name,
       slug: province.slug,
-      publishedProjectCount: projects._count._all,
-      startingPrice: cheapest?.toFixed(4) ?? null,
-      currency: currency?.currency ?? null,
+      publishedProjectCount: projects.reduce((count, group) => count + group._count._all, 0),
+      startingPrice: singleCurrency?._min.startingPrice?.toFixed(4) ?? null,
+      currency: singleCurrency?.currency ?? null,
     };
   }
 }

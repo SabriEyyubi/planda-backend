@@ -10,6 +10,7 @@ import {
   Prisma,
   ProjectStatus,
   Unit,
+  UnitStatus,
 } from '@prisma/client';
 import { AppException } from '../../common/exceptions/app.exception';
 import { MutationContext } from '../../common/types/mutation-context';
@@ -90,6 +91,9 @@ export class MarketplaceService {
       currency: dto.currency.toUpperCase(),
       consentToDeveloper: dto.consentToDeveloper,
       consentVersion: dto.consentVersion.trim(),
+      // Omit empty context from the hash to preserve retries of pre-context leads.
+      ...(dto.paymentPlanId ? { paymentPlanId: dto.paymentPlanId.toLowerCase() } : {}),
+      ...(dto.message?.trim() ? { message: dto.message.trim() } : {}),
     };
     const requestHash = createHash('sha256').update(JSON.stringify(normalized)).digest('hex');
     const key = { buyerUserId, projectId, idempotencyKey };
@@ -101,6 +105,18 @@ export class MarketplaceService {
 
     try {
       const lead = await this.prisma.$transaction(async (tx) => {
+        const plan = normalized.paymentPlanId
+          ? await tx.paymentPlan.findFirst({
+              where: { id: normalized.paymentPlanId, projectId },
+              select: { name: true },
+            })
+          : null;
+        if (normalized.paymentPlanId && !plan)
+          throw new AppException(
+            'LEAD_PAYMENT_PLAN_NOT_FOUND',
+            'Payment plan does not belong to this project',
+            422,
+          );
         const created = await tx.lead.create({
           data: {
             projectId,
@@ -112,6 +128,9 @@ export class MarketplaceService {
             email: normalized.email,
             preferredLanguage: normalized.preferredLanguage,
             unitPreference: normalized.unitPreference,
+            paymentPlanId: normalized.paymentPlanId ?? null,
+            paymentPlanName: plan?.name ?? null,
+            message: normalized.message ?? null,
             budgetMin: normalized.budgetMin,
             budgetMax: normalized.budgetMax,
             currency: normalized.currency,
@@ -238,6 +257,8 @@ export class MarketplaceService {
         include: { project: { select: { name: true, developerOrganizationId: true } } },
       });
       if (!lead) throw new AppException('LEAD_NOT_FOUND', 'Lead not found', 404);
+      if (lead.version !== dto.expectedVersion)
+        throw new AppException('LEAD_CONCURRENCY_CONFLICT', 'Lead changed before update', 409);
       if (!canTransitionLead(lead.status, dto.status))
         throw new AppException(
           'INVALID_LEAD_STATUS_TRANSITION',
@@ -326,33 +347,34 @@ export class MarketplaceService {
   ): Promise<UnitResponseDto> {
     let unit: Unit;
     try {
-      unit = await this.prisma.$transaction(async (tx) => {
-        const project = await tx.project.findFirst({
-          where: {
-            id: projectId,
-            developerOrganization: this.developerOrganizationScope(userId, true),
-          },
-          select: { developerOrganizationId: true },
-        });
-        if (!project) throw new AppException('PROJECT_NOT_FOUND', 'Project not found', 404);
-        const created = await tx.unit.create({ data: { projectId, ...dto } });
-        await tx.project.update({
-          where: { id: projectId },
-          data: { stockUpdatedAt: new Date(), priceUpdatedAt: new Date() },
-        });
-        await tx.auditLog.create({
-          data: {
-            actorUserId: userId,
-            organizationId: project.developerOrganizationId,
-            action: 'UNIT_CREATED',
-            entityType: 'Unit',
-            entityId: created.id,
-            after: this.unitSnapshot(created),
-            ...context,
-          },
-        });
-        return created;
-      });
+      unit = await this.prisma.$transaction(
+        async (tx) => {
+          const project = await tx.project.findFirst({
+            where: {
+              id: projectId,
+              developerOrganization: this.developerOrganizationScope(userId, true),
+            },
+            select: { developerOrganizationId: true },
+          });
+          if (!project) throw new AppException('PROJECT_NOT_FOUND', 'Project not found', 404);
+          const currency = await this.lockInventoryProject(tx, projectId);
+          const created = await tx.unit.create({ data: { projectId, ...dto } });
+          await this.refreshInventoryPrice(tx, projectId, currency);
+          await tx.auditLog.create({
+            data: {
+              actorUserId: userId,
+              organizationId: project.developerOrganizationId,
+              action: 'UNIT_CREATED',
+              entityType: 'Unit',
+              entityId: created.id,
+              after: this.unitSnapshot(created),
+              ...context,
+            },
+          });
+          return created;
+        },
+        { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
+      );
     } catch (error) {
       if (this.isUniqueConstraint(error))
         throw new AppException(
@@ -377,48 +399,46 @@ export class MarketplaceService {
       throw new AppException('EMPTY_UPDATE', 'At least one unit field is required', 400);
     let unit: Unit;
     try {
-      unit = await this.prisma.$transaction(async (tx) => {
-        const scope = this.developerOrganizationScope(userId, true);
-        const before = await tx.unit.findFirst({
-          where: { id: unitId, projectId, project: { developerOrganization: scope } },
-          include: { project: { select: { developerOrganizationId: true } } },
-        });
-        if (!before) throw new AppException('UNIT_NOT_FOUND', 'Unit not found', 404);
-        const write = await tx.unit.updateMany({
-          where: {
-            id: unitId,
-            projectId,
-            version: expectedVersion,
-            project: { developerOrganization: scope },
-          },
-          data: { ...data, version: { increment: 1 } },
-        });
-        if (write.count !== 1)
-          throw new AppException('UNIT_CONCURRENCY_CONFLICT', 'Unit changed before update', 409);
-        await tx.project.update({
-          where: { id: projectId },
-          data: {
-            stockUpdatedAt: new Date(),
-            ...(data.price ? { priceUpdatedAt: new Date() } : {}),
-          },
-        });
-        const updated = await tx.unit.findFirstOrThrow({
-          where: { id: unitId, project: { developerOrganization: scope } },
-        });
-        await tx.auditLog.create({
-          data: {
-            actorUserId: userId,
-            organizationId: before.project.developerOrganizationId,
-            action: data.price ? 'UNIT_PRICE_AND_STOCK_UPDATED' : 'UNIT_STOCK_UPDATED',
-            entityType: 'Unit',
-            entityId: unitId,
-            before: this.unitSnapshot(before),
-            after: this.unitSnapshot(updated),
-            ...context,
-          },
-        });
-        return updated;
-      });
+      unit = await this.prisma.$transaction(
+        async (tx) => {
+          const scope = this.developerOrganizationScope(userId, true);
+          const before = await tx.unit.findFirst({
+            where: { id: unitId, projectId, project: { developerOrganization: scope } },
+            include: { project: { select: { developerOrganizationId: true } } },
+          });
+          if (!before) throw new AppException('UNIT_NOT_FOUND', 'Unit not found', 404);
+          const currency = await this.lockInventoryProject(tx, projectId);
+          const write = await tx.unit.updateMany({
+            where: {
+              id: unitId,
+              projectId,
+              version: expectedVersion,
+              project: { developerOrganization: scope },
+            },
+            data: { ...data, version: { increment: 1 } },
+          });
+          if (write.count !== 1)
+            throw new AppException('UNIT_CONCURRENCY_CONFLICT', 'Unit changed before update', 409);
+          await this.refreshInventoryPrice(tx, projectId, currency);
+          const updated = await tx.unit.findFirstOrThrow({
+            where: { id: unitId, project: { developerOrganization: scope } },
+          });
+          await tx.auditLog.create({
+            data: {
+              actorUserId: userId,
+              organizationId: before.project.developerOrganizationId,
+              action: data.price ? 'UNIT_PRICE_AND_STOCK_UPDATED' : 'UNIT_STOCK_UPDATED',
+              entityType: 'Unit',
+              entityId: unitId,
+              before: this.unitSnapshot(before),
+              after: this.unitSnapshot(updated),
+              ...context,
+            },
+          });
+          return updated;
+        },
+        { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted },
+      );
     } catch (error) {
       if (this.isUniqueConstraint(error))
         throw new AppException(
@@ -665,6 +685,40 @@ export class MarketplaceService {
     }));
   }
 
+  private async lockInventoryProject(
+    tx: Prisma.TransactionClient,
+    projectId: string,
+  ): Promise<string> {
+    // All inventory writes lock their parent first; READ COMMITTED lets the
+    // following aggregate see inventory committed by the previous lock holder.
+    const rows = await tx.$queryRaw<Array<{ currency: string }>>`
+      SELECT currency FROM projects WHERE id = ${projectId}::uuid FOR UPDATE
+    `;
+    if (!rows[0]) throw new AppException('PROJECT_NOT_FOUND', 'Project not found', 404);
+    return rows[0].currency;
+  }
+
+  private async refreshInventoryPrice(
+    tx: Prisma.TransactionClient,
+    projectId: string,
+    currency: string,
+  ): Promise<void> {
+    const aggregate = await tx.unit.aggregate({
+      where: { projectId, currency, status: UnitStatus.AVAILABLE },
+      _min: { price: true },
+    });
+    const minimum = aggregate._min.price;
+    const now = new Date();
+    await tx.project.update({
+      where: { id: projectId },
+      data: {
+        stockUpdatedAt: now,
+        priceUpdatedAt: minimum === null ? null : now,
+        ...(minimum === null ? {} : { startingPrice: minimum }),
+      },
+    });
+  }
+
   private toLeadResponse(lead: Lead & { project: { name: string } }): LeadResponseDto {
     return {
       id: lead.id,
@@ -675,6 +729,9 @@ export class MarketplaceService {
       email: lead.email,
       preferredLanguage: lead.preferredLanguage,
       unitPreference: lead.unitPreference,
+      paymentPlanId: lead.paymentPlanId,
+      paymentPlanName: lead.paymentPlanName,
+      message: lead.message,
       budgetMin: lead.budgetMin?.toFixed(4) ?? null,
       budgetMax: lead.budgetMax?.toFixed(4) ?? null,
       currency: lead.currency,
@@ -835,6 +892,7 @@ export class MarketplaceService {
       name: project.name,
       developerName: project.developerOrganization.name,
       publicStartingPrice: project.startingPrice.toFixed(4),
+      currency: project.currency,
       brokerPrice: project.brokerOffer?.brokerPrice?.toFixed(4) ?? null,
       commissionPercent: project.brokerOffer?.commissionPercent?.toFixed(2) ?? null,
       reservationHours: project.brokerOffer?.reservationHours ?? null,
@@ -843,7 +901,9 @@ export class MarketplaceService {
         ...this.toUnitResponse(unit),
         brokerPrice:
           unit.brokerTerm?.brokerPrice?.toFixed(4) ??
-          project.brokerOffer?.brokerPrice?.toFixed(4) ??
+          (unit.currency === project.currency
+            ? project.brokerOffer?.brokerPrice?.toFixed(4)
+            : null) ??
           null,
         commissionPercent:
           unit.brokerTerm?.commissionPercent?.toFixed(2) ??

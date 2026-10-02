@@ -94,6 +94,7 @@ export class ProjectsService {
     if (cursor) and.push(this.cursorWhere(cursor));
     const where: Prisma.ProjectWhereInput = {
       status: ProjectStatus.PUBLISHED,
+      ...(query.currency ? { currency: query.currency } : {}),
       ...(query.provinceId ? { provinceId: query.provinceId } : {}),
       ...(query.districtId ? { districtId: query.districtId } : {}),
       ...(query.developerOrganizationId
@@ -393,10 +394,12 @@ export class ProjectsService {
     dto: UpdateDeveloperProjectDto,
     context: MutationContext,
   ): Promise<ProjectResponseDto> {
-    if (Object.keys(dto).length === 0) {
+    const { expectedVersion, deliveryDate, ...rest } = dto;
+    if (Object.keys(rest).length === 0 && deliveryDate === undefined) {
       throw new AppException('EMPTY_UPDATE', 'At least one project field is required', 400);
     }
     const project = await this.findDeveloperProjectForMutation(userId, id);
+    if (project.version !== expectedVersion) throw this.concurrencyConflict();
     if (project.status !== ProjectStatus.DRAFT) {
       throw new AppException(
         'PROJECT_NOT_EDITABLE',
@@ -416,14 +419,13 @@ export class ProjectsService {
     if (dto.provinceId || dto.districtId) {
       await this.assertDistrictBelongsToProvince(districtId, provinceId);
     }
-    const { deliveryDate, ...rest } = dto;
     try {
       const updated = await this.prisma.$transaction(async (tx) => {
         const write = await tx.project.updateMany({
           where: {
             id,
             status: ProjectStatus.DRAFT,
-            version: project.version,
+            version: expectedVersion,
             developerOrganization: this.developerOrganizationScope(userId, true),
           },
           data: {
@@ -712,9 +714,10 @@ export class ProjectsService {
   ): ProjectUnitTypeDto[] {
     const groups = new Map<string, ProjectUnitTypeDto>();
     for (const unit of units) {
-      const existing = groups.get(unit.roomType);
+      const key = JSON.stringify([unit.roomType, unit.currency]);
+      const existing = groups.get(key);
       if (!existing) {
-        groups.set(unit.roomType, {
+        groups.set(key, {
           roomType: unit.roomType,
           availableCount: 1,
           minNetArea: unit.netArea.toFixed(2),
@@ -817,6 +820,18 @@ export class ProjectsService {
   }
 
   private validatePublicQuery(query: ProjectQueryDto): void {
+    const hasMonetaryQuery =
+      query.minPrice !== undefined ||
+      query.maxPrice !== undefined ||
+      query.maxMonthlyPayment !== undefined ||
+      query.sort === ProjectSort.PRICE_ASC ||
+      query.sort === ProjectSort.PRICE_DESC;
+    if (hasMonetaryQuery && !query.currency)
+      throw new AppException(
+        'CURRENCY_REQUIRED',
+        'Select TRY or USD for monetary filters and price sorting',
+        400,
+      );
     if (query.minPrice && query.maxPrice && new Prisma.Decimal(query.minPrice).gt(query.maxPrice))
       throw new AppException('INVALID_PRICE_RANGE', 'Minimum price cannot exceed maximum', 422);
     if (query.maxDownPaymentPercent && new Prisma.Decimal(query.maxDownPaymentPercent).gt(100))

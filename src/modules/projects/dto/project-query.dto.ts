@@ -4,6 +4,7 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
+  IsIn,
   IsInt,
   IsOptional,
   IsString,
@@ -24,6 +25,15 @@ export enum ProjectSort {
 const NON_NEGATIVE_DECIMAL = /^\d{1,15}(?:\.\d{1,4})?$/;
 
 export class ProjectQueryDto {
+  @ApiPropertyOptional({
+    enum: ['TRY', 'USD'],
+    description:
+      'Required for price bounds, monthly payment bounds, and price sorting; no conversion',
+  })
+  @IsOptional()
+  @IsIn(['TRY', 'USD'])
+  currency?: 'TRY' | 'USD';
+
   @ApiPropertyOptional({ description: 'Project, developer or location search', maxLength: 100 })
   @IsOptional()
   @Transform(({ value }: { value: unknown }) => (typeof value === 'string' ? value.trim() : value))

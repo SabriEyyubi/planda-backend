@@ -2124,6 +2124,13 @@
         "operationId": "ProjectsController_list_v1",
         "parameters": [
           {
+            "name": "currency",
+            "required": false,
+            "in": "query",
+            "description": "Required for price bounds, monthly payment bounds, and price sorting; no conversion",
+            "schema": { "type": "string", "enum": ["TRY", "USD"] }
+          },
+          {
             "name": "q",
             "required": false,
             "in": "query",
@@ -3902,6 +3909,8 @@
           "email": { "type": "string" },
           "preferredLanguage": { "type": "string", "enum": ["TR", "EN", "AR", "RU"] },
           "unitPreference": { "type": "string", "example": "2+1" },
+          "paymentPlanId": { "type": "string", "format": "uuid" },
+          "message": { "type": "string", "maxLength": 1000 },
           "budgetMin": { "type": "string", "example": "8000000.0000" },
           "budgetMax": { "type": "string", "example": "12000000.0000" },
           "currency": { "type": "object", "example": "TRY" },
@@ -3931,6 +3940,9 @@
           "email": { "type": "object", "nullable": true },
           "preferredLanguage": { "type": "string", "enum": ["TR", "EN", "AR", "RU"] },
           "unitPreference": { "type": "object", "nullable": true },
+          "paymentPlanId": { "type": "string", "format": "uuid", "nullable": true },
+          "paymentPlanName": { "type": "string", "nullable": true },
+          "message": { "type": "string", "maxLength": 1000, "nullable": true },
           "budgetMin": { "type": "object", "nullable": true },
           "budgetMax": { "type": "object", "nullable": true },
           "currency": { "type": "string" },
@@ -4009,16 +4021,16 @@
         "properties": {
           "id": { "type": "string", "format": "uuid" },
           "unitNumber": { "type": "string" },
-          "block": { "type": "object", "nullable": true },
-          "floor": { "type": "object", "nullable": true },
+          "block": { "type": "string", "nullable": true },
+          "floor": { "type": "number", "nullable": true },
           "roomType": { "type": "string" },
           "netArea": { "type": "string" },
-          "grossArea": { "type": "object", "nullable": true },
+          "grossArea": { "type": "string", "nullable": true },
           "price": { "type": "string" },
           "currency": { "type": "string" },
           "status": { "type": "string", "enum": ["AVAILABLE", "RESERVED", "SOLD"] },
-          "orientation": { "type": "object", "nullable": true },
-          "floorPlanImageUrl": { "type": "object", "nullable": true },
+          "orientation": { "type": "string", "nullable": true },
+          "floorPlanImageUrl": { "type": "string", "nullable": true },
           "version": { "type": "number" },
           "updatedAt": { "type": "string", "format": "date-time" }
         },
@@ -4178,6 +4190,39 @@
         "properties": { "expectedVersion": { "type": "number", "minimum": 1 } },
         "required": ["expectedVersion"]
       },
+      "BrokerUnitResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "unitNumber": { "type": "string" },
+          "block": { "type": "string", "nullable": true },
+          "floor": { "type": "number", "nullable": true },
+          "roomType": { "type": "string" },
+          "netArea": { "type": "string" },
+          "grossArea": { "type": "string", "nullable": true },
+          "price": { "type": "string" },
+          "currency": { "type": "string" },
+          "status": { "type": "string", "enum": ["AVAILABLE", "RESERVED", "SOLD"] },
+          "orientation": { "type": "string", "nullable": true },
+          "floorPlanImageUrl": { "type": "string", "nullable": true },
+          "version": { "type": "number" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "brokerPrice": { "type": "string", "nullable": true },
+          "commissionPercent": { "type": "string", "nullable": true },
+          "brokerTermsUpdatedAt": { "type": "string", "format": "date-time", "nullable": true }
+        },
+        "required": [
+          "id",
+          "unitNumber",
+          "roomType",
+          "netArea",
+          "price",
+          "currency",
+          "status",
+          "version",
+          "updatedAt"
+        ]
+      },
       "BrokerProjectResponseDto": {
         "type": "object",
         "properties": {
@@ -4186,11 +4231,18 @@
           "name": { "type": "string" },
           "developerName": { "type": "string" },
           "publicStartingPrice": { "type": "string" },
-          "brokerPrice": { "type": "object", "nullable": true },
-          "commissionPercent": { "type": "object", "nullable": true },
-          "reservationHours": { "type": "object", "nullable": true },
-          "salesContact": { "type": "object", "nullable": true },
-          "units": { "type": "array", "items": { "type": "object" } },
+          "currency": {
+            "type": "string",
+            "description": "Currency of publicStartingPrice and the project brokerPrice"
+          },
+          "brokerPrice": { "type": "string", "nullable": true },
+          "commissionPercent": { "type": "string", "nullable": true },
+          "reservationHours": { "type": "number", "nullable": true },
+          "salesContact": { "type": "string", "nullable": true },
+          "units": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BrokerUnitResponseDto" }
+          },
           "materialCount": { "type": "number" },
           "updatedAt": { "type": "string", "format": "date-time" }
         },
@@ -4200,6 +4252,7 @@
           "name",
           "developerName",
           "publicStartingPrice",
+          "currency",
           "units",
           "materialCount",
           "updatedAt"
@@ -4678,12 +4731,18 @@
             "enum": ["PLANNED", "UNDER_CONSTRUCTION", "READY"],
             "default": "PLANNED"
           },
+          "expectedVersion": {
+            "type": "number",
+            "minimum": 1,
+            "description": "Project version originally loaded by the editor"
+          },
           "status": {
             "type": "string",
             "enum": ["IN_REVIEW"],
             "description": "Developer transition is limited to DRAFT → IN_REVIEW"
           }
-        }
+        },
+        "required": ["expectedVersion"]
       },
       "DeveloperOverviewResponseDto": {
         "type": "object",

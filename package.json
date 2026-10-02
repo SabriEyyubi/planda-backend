@@ -12,7 +12,7 @@
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:prod": "node dist/main.js",
+    "start:prod": "node dist/src/main.js",
     "lint": "eslint \"{src,test,prisma,scripts}/**/*.ts\"",
     "lint:fix": "pnpm lint --fix",
     "format": "prettier --write \"{src,test,prisma,docs,scripts,openapi}/**/*.{ts,md,json}\" \"*.{md,json,yml,yaml}\"",
@@ -26,6 +26,7 @@
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
+    "demo:catalog": "tsx scripts/demo-catalog.ts",
     "db:studio": "prisma studio",
     "storage:ensure-bucket": "tsx scripts/ensure-storage-bucket.ts"
   },

@@ -10,6 +10,10 @@ export class LeadResponseDto {
   @ApiPropertyOptional({ nullable: true }) email!: string | null;
   @ApiProperty({ enum: PreferredLanguage }) preferredLanguage!: PreferredLanguage;
   @ApiPropertyOptional({ nullable: true }) unitPreference!: string | null;
+  @ApiPropertyOptional({ type: String, format: 'uuid', nullable: true }) paymentPlanId!:
+    string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) paymentPlanName!: string | null;
+  @ApiPropertyOptional({ type: String, maxLength: 1000, nullable: true }) message!: string | null;
   @ApiPropertyOptional({ nullable: true }) budgetMin!: string | null;
   @ApiPropertyOptional({ nullable: true }) budgetMax!: string | null;
   @ApiProperty() currency!: string;
@@ -23,16 +27,16 @@ export class LeadResponseDto {
 export class UnitResponseDto {
   @ApiProperty({ format: 'uuid' }) id!: string;
   @ApiProperty() unitNumber!: string;
-  @ApiPropertyOptional({ nullable: true }) block!: string | null;
-  @ApiPropertyOptional({ nullable: true }) floor!: number | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) block!: string | null;
+  @ApiPropertyOptional({ type: Number, nullable: true }) floor!: number | null;
   @ApiProperty() roomType!: string;
   @ApiProperty() netArea!: string;
-  @ApiPropertyOptional({ nullable: true }) grossArea!: string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) grossArea!: string | null;
   @ApiProperty() price!: string;
   @ApiProperty() currency!: string;
   @ApiProperty({ enum: UnitStatus }) status!: UnitStatus;
-  @ApiPropertyOptional({ nullable: true }) orientation!: string | null;
-  @ApiPropertyOptional({ nullable: true }) floorPlanImageUrl!: string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) orientation!: string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) floorPlanImageUrl!: string | null;
   @ApiProperty() version!: number;
   @ApiProperty({ format: 'date-time' }) updatedAt!: string;
 }
@@ -84,21 +88,23 @@ export class BrokerProjectResponseDto {
   @ApiProperty() name!: string;
   @ApiProperty() developerName!: string;
   @ApiProperty() publicStartingPrice!: string;
-  @ApiPropertyOptional({ nullable: true }) brokerPrice!: string | null;
-  @ApiPropertyOptional({ nullable: true }) commissionPercent!: string | null;
-  @ApiPropertyOptional({ nullable: true }) reservationHours!: number | null;
-  @ApiPropertyOptional({ nullable: true }) salesContact!: string | null;
-  @ApiProperty({ type: 'array', items: { type: 'object' } })
+  @ApiProperty({ description: 'Currency of publicStartingPrice and the project brokerPrice' })
+  currency!: string;
+  @ApiPropertyOptional({ type: String, nullable: true }) brokerPrice!: string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) commissionPercent!: string | null;
+  @ApiPropertyOptional({ type: Number, nullable: true }) reservationHours!: number | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) salesContact!: string | null;
+  @ApiProperty({ type: () => [BrokerUnitResponseDto] })
   units!: BrokerUnitResponseDto[];
   @ApiProperty() materialCount!: number;
   @ApiProperty({ format: 'date-time' }) updatedAt!: string;
 }
 
 export class BrokerUnitResponseDto extends UnitResponseDto {
-  @ApiPropertyOptional({ nullable: true }) brokerPrice!: string | null;
-  @ApiPropertyOptional({ nullable: true }) commissionPercent!: string | null;
-  @ApiPropertyOptional({ format: 'date-time', nullable: true }) brokerTermsUpdatedAt!:
-    string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) brokerPrice!: string | null;
+  @ApiPropertyOptional({ type: String, nullable: true }) commissionPercent!: string | null;
+  @ApiPropertyOptional({ type: String, format: 'date-time', nullable: true })
+  brokerTermsUpdatedAt!: string | null;
 }
 
 export class BrokerMaterialMetadataDto {

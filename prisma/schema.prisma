@@ -308,6 +308,9 @@ model Lead {
   email             String?           @db.Citext
   preferredLanguage PreferredLanguage @map("preferred_language")
   unitPreference    String?           @map("unit_preference") @db.VarChar(40)
+  paymentPlanId     String?           @map("payment_plan_id") @db.Uuid
+  paymentPlanName   String?           @map("payment_plan_name") @db.VarChar(120)
+  message           String?           @db.VarChar(1000)
   budgetMin         Decimal?          @map("budget_min") @db.Decimal(19, 4)
   budgetMax         Decimal?          @map("budget_max") @db.Decimal(19, 4)
   currency          String            @default("TRY") @db.Char(3)

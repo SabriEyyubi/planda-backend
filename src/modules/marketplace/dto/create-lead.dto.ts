@@ -8,6 +8,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   Length,
   Matches,
   MaxLength,
@@ -39,6 +40,17 @@ export class CreateLeadDto {
   @IsString()
   @MaxLength(40)
   unitPreference?: string;
+
+  @ApiPropertyOptional({ format: 'uuid' })
+  @IsOptional()
+  @IsUUID()
+  paymentPlanId?: string;
+
+  @ApiPropertyOptional({ maxLength: 1000 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(1000)
+  message?: string;
 
   @ApiPropertyOptional({ example: '8000000.0000' })
   @IsOptional()

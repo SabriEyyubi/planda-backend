@@ -31,6 +31,7 @@ describe('MarketplaceService operations API', () => {
       clientVersion: '6.19.0',
     });
     const transactionClient = {
+      $queryRaw: jest.fn().mockResolvedValue([{ currency: 'TRY' }]),
       project: {
         findFirst: jest.fn().mockResolvedValue({ developerOrganizationId: 'org-1' }),
       },
