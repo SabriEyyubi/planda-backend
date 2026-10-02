@@ -27,6 +27,7 @@ jobs:
           --health-timeout 3s --health-retries 10
     env:
       NODE_ENV: test
+      PLANDA_E2E_DATABASE_NAME: planda_test
       DATABASE_URL: postgresql://planda:planda_test@localhost:5432/planda_test?schema=public
       REDIS_URL: redis://localhost:6379
       JWT_ACCESS_SECRET: ci-access-secret-at-least-32-characters-long
@@ -56,13 +57,23 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-      - name: Start S3-compatible storage
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+          cache: false
+      # Build the same upstream release: its public container images are unavailable.
+      - name: Build S3-compatible storage from pinned upstream source
         run: >-
-          docker run --detach --name planda-minio --publish 9000:9000
-          --env MINIO_ROOT_USER=planda-ci
-          --env MINIO_ROOT_PASSWORD=planda-ci-secret-at-least-16-characters
-          minio/minio:RELEASE.2025-09-07T16-13-09Z
-          server /data
+          GOBIN="$RUNNER_TEMP/minio-bin" go install
+          github.com/minio/minio@07c3a429bfed433e49018cb0f78a52145d4bedeb
+      - name: Start S3-compatible storage
+        env:
+          MINIO_ROOT_USER: planda-ci
+          MINIO_ROOT_PASSWORD: planda-ci-secret-at-least-16-characters
+        run: |
+          mkdir -p "$RUNNER_TEMP/minio-data"
+          nohup "$RUNNER_TEMP/minio-bin/minio" server "$RUNNER_TEMP/minio-data" \
+            --address 127.0.0.1:9000 > "$RUNNER_TEMP/minio.log" 2>&1 &
       - name: Wait for storage
         run: |
           for attempt in $(seq 1 30); do
@@ -71,7 +82,7 @@ jobs:
             fi
             sleep 1
           done
-          docker logs planda-minio
+          cat "$RUNNER_TEMP/minio.log"
           exit 1
       - run: pnpm install --frozen-lockfile
       - run: pnpm storage:ensure-bucket
